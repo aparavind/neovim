@@ -13,7 +13,6 @@
 
 // -V:STRUCT_CAST:641
 #define STRUCT_CAST(Type, obj) ((Type *)(obj))
-#define is_terminal(stream) (uv_guess_handle(fileno(stream)) == UV_TTY)
 #define BUF_SIZE 0xfff
 #define CTRL_C 0x03
 
@@ -32,6 +31,18 @@ bool owns_tty(void)
 #else
   return getsid(0) == getpid();
 #endif
+}
+
+static inline bool is_terminal(const FILE * stream1) 
+    REAL_FATTR_ALWAYS_INLINE REAL_FATTR_PURE REAL_FATTR_WARN_UNUSED_RESULT;
+
+/**
+ * Checks if the file pointer is not a terminal like STDIN or STDOUT 
+ * @param[in] stream check if terminal
+ * @return bool
+ */
+static inline bool is_terminal(const FILE * stream1){
+    return (uv_guess_handle(fileno(stream1)) == UV_TTY);
 }
 
 static void walk_cb(uv_handle_t *handle, void *arg)
