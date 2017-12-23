@@ -34,15 +34,15 @@ bool owns_tty(void)
 }
 
 static inline bool is_terminal(const FILE * stream1) 
-    REAL_FATTR_ALWAYS_INLINE REAL_FATTR_PURE REAL_FATTR_WARN_UNUSED_RESULT;
+    __attribute__((always_inline)) __attribute__ ((pure)) __attribute__((warn_unused_result));
 
 /**
  * Checks if the file pointer is not a terminal like STDIN or STDOUT 
- * @param[in] stream check if terminal
+ * @param[in] stream to be checked
  * @return bool
  */
-static inline bool is_terminal(const FILE * stream1){
-    return (uv_guess_handle(fileno(stream1)) == UV_TTY);
+static inline bool is_terminal(const FILE * stream){
+    return (uv_guess_handle(fileno(stream)) == UV_TTY);
 }
 
 static void walk_cb(uv_handle_t *handle, void *arg)
